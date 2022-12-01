@@ -1,11 +1,3 @@
-use std::env;
-use std::fs;
-
-fn read_file() -> String {
-    let file_path = env::current_dir().unwrap().join("inputs/day-1.txt");
-    fs::read_to_string(file_path).expect("Unable to open input file")
-}
-
 fn part1(input: &String) {
     let mut most = 0;
     let mut current = 0;
@@ -52,9 +44,7 @@ fn part2(input: &String) {
     println!("Part 2: {}", result);
 }
 
-pub fn solve() {
-    let input = read_file();
-
+pub fn solve(input: &String) {
     part1(&input);
     part2(&input);
 }
