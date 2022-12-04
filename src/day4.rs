@@ -1,44 +1,38 @@
-fn line_to_pairs(line: &str) -> u32 {
+enum Solution {
+    Part1,
+    Part2,
+}
+
+fn check_overlap(line: &str, part: Solution) -> bool {
     let ids: Vec<u32> = line
         .split(",")
         .flat_map(|pair| pair.split("-").map(|id| id.parse::<u32>().unwrap()))
         .collect();
 
     match &ids[..] {
-        [s1, e1, s2, e2] => {
-            if (s1 >= s2 && e1 <= e2) || (s2 >= s1 && e2 <= e1) {
-                return 1;
-            }
-            return 0;
-        }
-        _ => 0,
+        [s1, e1, s2, e2] => match part {
+            Solution::Part1 => (s1 >= s2 && e1 <= e2) || (s2 >= s1 && e2 <= e1),
+            Solution::Part2 => s1 <= e2 && e1 >= s2,
+        },
+        _ => false,
     }
 }
 
 fn part1(input: &String) {
-    let result: u32 = input.lines().map(line_to_pairs).sum();
+    let result: u32 = input
+        .lines()
+        .filter(|l| check_overlap(l, Solution::Part1))
+        .collect::<Vec<&str>>()
+        .len() as u32;
     println!("Part 1: {}", result);
 }
 
-fn line_to_pairs2(line: &str) -> u32 {
-    let ids: Vec<u32> = line
-        .split(",")
-        .flat_map(|pair| pair.split("-").map(|id| id.parse::<u32>().unwrap()))
-        .collect();
-
-    match &ids[..] {
-        [s1, e1, s2, e2] => {
-            if s1 <= e2 && e1 >= s2 {
-                return 1;
-            }
-            return 0;
-        }
-        _ => 0,
-    }
-}
-
 fn part2(input: &String) {
-    let result: u32 = input.lines().map(line_to_pairs2).sum();
+    let result: u32 = input
+        .lines()
+        .filter(|l| check_overlap(l, Solution::Part2))
+        .collect::<Vec<&str>>()
+        .len() as u32;
     println!("Part 2: {}", result);
 }
 
