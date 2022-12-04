@@ -1,4 +1,4 @@
-mod day3;
+mod day4;
 use std::env;
 use std::fs;
 
@@ -12,5 +12,5 @@ fn read_input(day_number: u8) -> String {
 }
 
 fn main() {
-    day3::solve(&read_input(3))
+    day4::solve(&read_input(4))
 }
