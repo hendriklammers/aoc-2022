@@ -1,3 +1,6 @@
+mod day1;
+mod day2;
+mod day3;
 mod day4;
 use std::env;
 use std::fs;
@@ -12,5 +15,13 @@ fn read_input(day_number: u8) -> String {
 }
 
 fn main() {
-    day4::solve(&read_input(4))
+    let args: Vec<String> = env::args().collect();
+
+    match args[1].parse().unwrap() {
+        1 => day1::solve(&read_input(1)),
+        2 => day2::solve(&read_input(2)),
+        3 => day3::solve(&read_input(3)),
+        4 => day4::solve(&read_input(4)),
+        _ => println!("Not a valid day"),
+    }
 }
