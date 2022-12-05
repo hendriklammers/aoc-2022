@@ -2,6 +2,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 use std::env;
 use std::fs;
 
@@ -22,6 +23,7 @@ fn main() {
         2 => day2::solve(&read_input(2)),
         3 => day3::solve(&read_input(3)),
         4 => day4::solve(&read_input(4)),
+        5 => day5::solve(&read_input(5)),
         _ => println!("Not a valid day"),
     }
 }
