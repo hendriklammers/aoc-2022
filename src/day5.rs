@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 
-// enum Solution {
-//     Part1,
-//     Part2,
-// }
+enum Solution {
+    Part1,
+    Part2,
+}
 
 fn create_stacks(input: &String) -> HashMap<u32, Vec<String>> {
     let mut stacks = HashMap::<u32, Vec<String>>::new();
@@ -12,7 +12,6 @@ fn create_stacks(input: &String) -> HashMap<u32, Vec<String>> {
         for (index, letter) in line.chars().skip(1).step_by(4).enumerate() {
             if letter.to_string() != " " {
                 let values = stacks.entry((index + 1) as u32).or_insert(vec![]);
-                // values.push(letter.to_string())
                 values.insert(0, letter.to_string());
             }
         }
@@ -44,17 +43,27 @@ fn line_to_move(line: &str) -> Move {
     };
 }
 
-fn part1(input: &String) {
+fn solve_part(input: &String, part: Solution) -> String {
     let mut stacks = create_stacks(input);
 
     let moves: Vec<Move> = input.lines().skip(10).map(line_to_move).collect();
 
     for m in moves {
-        for _ in 0..m.amount {
-            let from = stacks.entry(m.from).or_insert(vec![]);
-            let crate_to_move = from.pop().unwrap();
-            let to = stacks.entry(m.to).or_insert(vec![]);
-            to.push(crate_to_move);
+        if matches!(part, Solution::Part1) {
+            // Move one by one
+            for _ in 0..m.amount {
+                let from = stacks.entry(m.from).or_default();
+                let crate_to_move = from.pop().unwrap();
+                let to = stacks.entry(m.to).or_default();
+                to.push(crate_to_move);
+            }
+        } else if matches!(part, Solution::Part2) {
+            // Move stacks
+            let from = stacks.entry(m.from).or_default();
+            let start_range: usize = from.len() - (m.amount as usize);
+            let mut crates_to_move = from.drain(start_range..).collect();
+            let to = stacks.entry(m.to).or_default();
+            to.append(&mut crates_to_move);
         }
     }
 
@@ -64,15 +73,13 @@ fn part1(input: &String) {
         result.push_str(last_crate);
     }
 
-    println!("Part 1: {}", result);
-}
-
-fn part2(input: &String) {
-    let result = String::new();
-    println!("Part 2: {}", result);
+    return result;
 }
 
 pub fn solve(input: &String) {
-    part1(&input);
-    part2(&input);
+    let part1 = solve_part(input, Solution::Part1);
+    println!("Part 1: {}", part1);
+
+    let part2 = solve_part(input, Solution::Part2);
+    println!("Part 2: {}", part2);
 }
