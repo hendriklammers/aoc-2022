@@ -5,6 +5,7 @@ mod day4;
 mod day5;
 use std::env;
 use std::fs;
+use std::process;
 
 fn read_input(day_number: u8) -> String {
     let file_path = env::current_dir()
@@ -17,6 +18,11 @@ fn read_input(day_number: u8) -> String {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2 {
+        println!("Please provide a day number");
+        process::exit(1);
+    }
 
     match args[1].parse().unwrap() {
         1 => day1::solve(&read_input(1)),
